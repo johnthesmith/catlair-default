@@ -1,0 +1,4 @@
+# Log out user and make new session
+library: api.php
+class: \catlair\Api
+method: logout

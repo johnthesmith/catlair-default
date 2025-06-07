@@ -2,9 +2,6 @@
     This is the main CSS file of Catlair
 */
 
-/* Set content type for file */
-<cl content-type="text/css"/>
-
 /* Include config parameters */
 <cl content="context.yaml" keys="yaml"/>
 

@@ -1,4 +1,4 @@
 # Make content and return it
 library: api.php
 class: \catlair\Api
-method: makeContent
+method: make

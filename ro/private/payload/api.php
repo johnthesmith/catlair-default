@@ -4,6 +4,7 @@
 */
 
 
+
 namespace catlair;
 
 
@@ -19,20 +20,22 @@ include LIB . '/web/web_builder.php';
 */
 class Api extends WebPayload
 {
-
     /*
-        Builds static content.
+        Builds dynamyc content.
         It gets `index.html` and builds it using the URI and templates.
     */
-    public function pageСontent()
+    public function page()
     {
-        /* Get path */
-        $path = self::getPathKeyValue( $this -> getApp() -> getPath());
         return $this
-        /* Set default content */
+        /* Set default content index.html */
         -> setContent( $this -> getTemplate( 'index.html' ))
-        /* Build content from loaded index.html */
-        -> buildContent( $path );
+        /* Set content type */
+        -> setContentType( Mime::HTML )
+        /* Start building with arguments from uri-path */
+        -> buildContent
+        (
+            self::getPathKeyValue( $this -> getUrl() -> getPath())
+        );
     }
 
 
@@ -40,16 +43,24 @@ class Api extends WebPayload
     /*
         Content builder
     */
-    public function makeContent()
+    public function make()
     {
-        /* Get path */
-        $path = $this -> getApp() -> getPath();
-        array_shift( $path );
-        $path = \implode( '/', $path );
+        /* Prepare path */
+        $uriPath = $this -> getUrl() -> getPath();
+        /* Remove `make` from uri path */
+        array_shift( $uriPath );
+        /* Use other part of path */
+        $path = \implode( '/', $uriPath );
 
         return
         $this
+        /* Set start template */
         -> setContent( $this -> getTemplate( $path ))
+        /* Set content type */
+        -> setContentType
+        (
+            Mime::fromExt( pathinfo( $path, PATHINFO_EXTENSION) )
+        )
         -> buildContent();
     }
 
@@ -58,27 +69,49 @@ class Api extends WebPayload
     /*
         Read and return static content
     */
-    public function readСontent()
+    public function read()
     {
         /* Get path */
-        $path = $this -> getApp() -> getPath();
-        /* Remove first element */
+        $path = $this -> getUrl() -> getPath();
+        /* Remove first element 'file' */
         array_shift( $path );
         /* Use other part of path */
         $path = implode( '/', $path );
         /* Get file */
         $file = $this -> getContentFileAny( $path );
+
         if( !empty( $file ))
         {
             /* Read content file  and return it */
             $content = @file_get_contents( $file );
             $this -> setContent( $content );
+            $this -> setContentType
+            (
+                Mime::fromExt( pathinfo( $file, PATHINFO_EXTENSION))
+            );
         }
         else
         {
             /* File not found */
-            $this -> setResult( 'content-not-found', [ 'path' => $path ]);
+            $this -> setResult
+            (
+                'content-not-found',
+                [ 'path' => $path ]
+            );
         }
+        return $this;
+    }
+
+
+
+    /*
+        Log out
+    */
+    public function logout()
+    {
+        $this -> getApp() -> setDefaultUrl() -> getSession() -> reset();
+        $this -> page();
+
         return $this;
     }
 

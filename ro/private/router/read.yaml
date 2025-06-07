@@ -1,4 +1,4 @@
 # Return content without building asis
 library: api.php
 class: \catlair\Api
-method: readСontent
+method: read
