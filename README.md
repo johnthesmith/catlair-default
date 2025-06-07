@@ -2,7 +2,9 @@
 
 ## files
 
-1. rw/private
-0. rw/public
-0. ro/private
+1. ro/private
 0. ro/public
+
+## Information
+
+This directory does not provide for the presence of an rw folder.
