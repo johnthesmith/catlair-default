@@ -1,4 +1,0 @@
-# Open index html page
-library: api.php
-class: \catlair\Api
-method: page

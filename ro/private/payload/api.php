@@ -10,8 +10,8 @@ namespace catlair;
 
 
 /* Load web payload library */
-include LIB . '/web/web_payload.php';
-include LIB . '/web/web_builder.php';
+require_once LIB . '/web/web_payload.php';
+require_once LIB . '/web/web_builder.php';
 
 
 
@@ -21,21 +21,34 @@ include LIB . '/web/web_builder.php';
 class Api extends WebPayload
 {
     /*
+        Hello world method
+    */
+    public function hello_world()
+    {
+        return $this
+        -> setContent( 'hellow world' );
+    }
+
+
+
+    /*
         Builds dynamyc content.
         It gets `index.html` and builds it using the URI and templates.
     */
     public function page()
     {
+        /* Prepare path */
+        $uriPath = $this -> getUrl() -> getPath();
+        /* Remove `api` from uri path */
+        array_shift( $uriPath );
+
         return $this
         /* Set default content index.html */
         -> setContent( $this -> getTemplate( 'index.html' ))
         /* Set content type */
         -> setContentType( Mime::HTML )
         /* Start building with arguments from uri-path */
-        -> buildContent
-        (
-            self::getPathKeyValue( $this -> getUrl() -> getPath())
-        );
+        -> buildContent( self::getPathKeyValue( $uriPath ));
     }
 
 
@@ -45,12 +58,10 @@ class Api extends WebPayload
     */
     public function make()
     {
-        /* Prepare path */
-        $uriPath = $this -> getUrl() -> getPath();
-        /* Remove `make` from uri path */
-        array_shift( $uriPath );
+        /* Remove `api/method` from uri path */
+        $path = array_slice( $this -> getUrl() -> getPath(), 2 );
         /* Use other part of path */
-        $path = \implode( '/', $uriPath );
+        $path = \implode( '/', $path );
 
         return
         $this
@@ -71,14 +82,13 @@ class Api extends WebPayload
     */
     public function read()
     {
-        /* Get path */
-        $path = $this -> getUrl() -> getPath();
-        /* Remove first element 'file' */
-        array_shift( $path );
+        /* Remove `api/method` from uri path */
+        $path = array_slice( $this -> getUrl() -> getPath(), 2 );
         /* Use other part of path */
         $path = implode( '/', $path );
+
         /* Get file */
-        $file = $this -> getContentFileAny( $path );
+        $file = $this -> getFileAny( $path );
 
         if( !empty( $file ))
         {
@@ -95,23 +105,10 @@ class Api extends WebPayload
             /* File not found */
             $this -> setResult
             (
-                'content-not-found',
+                'file-not-found',
                 [ 'path' => $path ]
             );
         }
-        return $this;
-    }
-
-
-
-    /*
-        Log out
-    */
-    public function logout()
-    {
-        $this -> getApp() -> setDefaultUrl() -> getSession() -> reset();
-        $this -> page();
-
         return $this;
     }
 
@@ -130,9 +127,10 @@ class Api extends WebPayload
         array $aArgs = []
     )
     {
-        /* Build params from path */
-        $builder =
-        WebBuilder::create( $this )
+        /* Create builder object */
+        $builder = WebBuilder::create( $this );
+
+        $builder
         -> setContent( $this -> getContent())
         -> setContentType( $this -> getContentType() )
         -> setIncome
@@ -145,7 +143,9 @@ class Api extends WebPayload
                 $_POST,
             )
         )
-        -> build();
+        -> build()
+        -> resultTo( $this )
+        ;
 
         return $this
         -> setContentType( $builder -> getContentType())
