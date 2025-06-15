@@ -36,15 +36,24 @@ class ApiSession extends WebPayload
     */
     public function auth_form()
     {
-        return
-        $this -> setContent
+//коротким вызвом или сделать сборку операцией веба после получения результата
+//Файлы не читаются нет кота.
+//И менюшки не октрываются нормально - нет контента и нет ошибки - надо понять причину
+
+
+        return $this
+        -> setContent
         (
             $this -> getTemplate
             (
                 $this -> getApp() -> getSession() -> isGuest()
                 ? 'session/login.html'
                 : 'session/logout.html'
-            ) . $this -> getApp() -> getSession() -> getLogin()
+            )
+        )
+        -> buildContent
+        (
+            [ 'login' => $this -> getApp() -> getSession() -> getLogin()]
         );
     }
 
@@ -52,7 +61,7 @@ class ApiSession extends WebPayload
 
     /*
         Log out
-        Resets session and redirects to given URL (default '/').
+        Set guest login for session and redirects to given URL (default '/').
         http://localhost/api-session/logout
     */
     public function logout
@@ -61,7 +70,7 @@ class ApiSession extends WebPayload
     )
     {
         /* Reset session */
-        $this -> getApp() -> getSession() -> reset();
+        $this -> getApp() -> getSession() -> setLogin();
         /* Redirect */
         $this -> getApp() -> addHeader( 'Location: ' . $redirect );
         return $this;
@@ -72,7 +81,9 @@ class ApiSession extends WebPayload
     /*
         Log in
         Sets login in session and redirects to given URL (default '/').
-        http://localhost/api-session/logout
+        http://localhost/api-session/login
+        WARNING!!! this is example, method doesn't check the password.
+        You need to override this method.
     */
     public function login
     (

@@ -11,7 +11,6 @@ namespace catlair;
 
 /* Load web payload library */
 require_once LIB . '/web/web_payload.php';
-require_once LIB . '/web/web_builder.php';
 
 
 
@@ -110,45 +109,5 @@ class Api extends WebPayload
             );
         }
         return $this;
-    }
-
-
-
-    /**************************************************************************
-        Protected utility methods
-    */
-
-
-    /*
-        Content builder
-    */
-    protected function buildContent
-    (
-        array $aArgs = []
-    )
-    {
-        /* Create builder object */
-        $builder = WebBuilder::create( $this );
-
-        $builder
-        -> setContent( $this -> getContent())
-        -> setContentType( $this -> getContentType() )
-        -> setIncome
-        (
-            array_merge
-            (
-                $aArgs,
-                $_COOKIE,
-                $_GET,
-                $_POST,
-            )
-        )
-        -> build()
-        -> resultTo( $this )
-        ;
-
-        return $this
-        -> setContentType( $builder -> getContentType())
-        -> setContent( $builder -> getContent());
     }
 }

@@ -1,3 +1,4 @@
 # Session api
 library: api_session.php
 class: \catlair\ApiSession
+caller: api
