@@ -11,7 +11,7 @@ body
 .top
 {
     background-color: #f97316;
-    background-image: url(/read/images/pusa.svg);
+    background-image: url(/api/read/images/pusa.svg);
     background-position: 1em 1em;
     background-repeat: no-repeat;
     background-size: 5em 5em;

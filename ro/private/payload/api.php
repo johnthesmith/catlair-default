@@ -1,6 +1,11 @@
 <?php
 /*
-    Default payload api
+    Default Payload API
+
+    Provides methods:
+        page — dynamic content from index.html
+        make — generate content from any template
+        read — send file without any modifications
 */
 
 
@@ -19,6 +24,8 @@ require_once LIB . '/web/web_payload.php';
 */
 class Api extends WebPayload
 {
+
+
     /*
         Hello world method
     */
@@ -41,13 +48,16 @@ class Api extends WebPayload
         /* Remove `api` from uri path */
         array_shift( $uriPath );
 
-        return $this
+        $this
         /* Set default content index.html */
         -> setContent( $this -> getTemplate( 'index.html' ))
         /* Set content type */
         -> setContentType( Mime::HTML )
         /* Start building with arguments from uri-path */
-        -> buildContent( self::getPathKeyValue( $uriPath ));
+        -> buildContent( self::getPathKeyValue( $uriPath ))
+        ;
+
+        return $this;
     }
 
 

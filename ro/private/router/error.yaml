@@ -1,0 +1,4 @@
+# Session custom emplimentation
+library: error.php
+class: \catlair\Error
+caller: web
