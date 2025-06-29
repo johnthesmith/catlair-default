@@ -1,0 +1,8 @@
+# Baisic route for content and files read
+# methods
+#   read
+#   page
+#   make
+library: content.php
+class: \catlair\Content
+caller: api

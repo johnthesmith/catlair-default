@@ -1,4 +1,0 @@
-# Baisic api for content and files read
-library: api.php
-class: \catlair\Api
-caller: api

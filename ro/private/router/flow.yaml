@@ -1,0 +1,7 @@
+# Session custom emplimentation
+# method
+#  init
+#  postprocessing
+library: flow.php
+class: \catlair\Flow
+caller: internal

@@ -1,0 +1,9 @@
+# Session api
+# methods
+#  login_from
+#  login
+#  logout
+
+library: auth.php
+class: \catlair\Auth
+caller: api

@@ -1,4 +1,0 @@
-# Session custom emplimentation
-library: session_manager.php
-class: \catlair\SessionManager
-caller: web

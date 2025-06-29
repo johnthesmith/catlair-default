@@ -22,21 +22,8 @@ require_once LIB . '/web/web_payload.php';
 /*
     Api class declaration
 */
-class Api extends WebPayload
+class Content extends WebPayload
 {
-
-
-    /*
-        Hello world method
-    */
-    public function hello_world()
-    {
-        return $this
-        -> setContent( 'hellow world' );
-    }
-
-
-
     /*
         Builds dynamyc content.
         It gets `index.html` and builds it using the URI and templates.
