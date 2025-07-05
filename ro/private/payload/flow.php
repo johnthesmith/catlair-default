@@ -31,7 +31,8 @@ class Flow extends WebPayload
     )
     : self
     {
-        $this -> getApp() -> getSession()
+        $this -> getApp()
+        -> getSession()
         -> setTtlSec( $web__session__ttl_sec )
         -> setSslKey( $web__session__ssl_key )
         ;
@@ -46,15 +47,25 @@ class Flow extends WebPayload
     */
     public function postprocessing()
     {
-        $this -> setResult('sdf');
-//print_r('!!!!!!!!!!!!!');
-//exit(1);
-//        if( !$this -> isOk()  )
-//        {
-////            $this
-////            -> setContent( 'ERROR' )
-////            -> setContentType( Mime::HTML );
-//        }
+
+        if( !$this -> isOk()  )
+        {
+            $code = $this -> getCode();
+
+            http_response_code( 500 );
+            header( "X-App-Error-Code: " . $code );
+
+            $this
+            /* Set default content index.html */
+            -> setContent( $this -> getTemplate( 'index.html' ))
+            /* Set content type */
+            -> setContentType( Mime::HTML )
+            /* Set result code */
+            -> setOk()
+
+            -> buildContent([ 'page' => 'errors/500.html', 'code' => $code ])
+            ;
+        }
         return $this;
     }
 }

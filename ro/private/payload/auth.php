@@ -90,4 +90,29 @@ class Auth extends WebPayload
         return $this;
     }
 
+
+
+    public function switch_context
+    (
+        /* New context */
+        string $context = '',
+        /* Redirect url after logout */
+        string $redirect = '/'
+    )
+    {
+        /* Apply context */
+        $this -> getApp() -> getSession() -> set
+        (
+            'context',
+             explode( ';', $context )
+        );
+
+        if( $this -> isOk() )
+        {
+            /* Redirect */
+            $this -> getApp() -> addHeader( 'Location: ' . $redirect );
+        }
+
+        return $this;
+    }
 }
