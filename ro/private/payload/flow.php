@@ -47,7 +47,6 @@ class Flow extends WebPayload
     */
     public function postprocessing()
     {
-
         if( !$this -> isOk()  )
         {
             $code = $this -> getCode();
