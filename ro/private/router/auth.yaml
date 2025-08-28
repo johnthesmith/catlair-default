@@ -6,4 +6,3 @@
 
 library: auth.php
 class: \catlair\Auth
-caller: api

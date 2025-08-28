@@ -101,11 +101,10 @@ class Auth extends WebPayload
     )
     {
         /* Apply context */
-        $this -> getApp() -> getSession() -> set
-        (
-            'context',
-             explode( ';', $context )
-        );
+        $this
+        -> getApp()
+        -> getSession()
+        -> set( 'context', $context );
 
         if( $this -> isOk() )
         {

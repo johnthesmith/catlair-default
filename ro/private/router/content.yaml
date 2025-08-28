@@ -5,4 +5,3 @@
 #   make
 library: content.php
 class: \catlair\Content
-caller: api

@@ -47,7 +47,7 @@ class Flow extends WebPayload
     */
     public function postprocessing()
     {
-        if( !$this -> isOk()  )
+        if( !$this -> isOk() && $this -> getContentType() == Mime::HTML )
         {
             $code = $this -> getCode();
 

@@ -4,4 +4,3 @@
 #  postprocessing
 library: flow.php
 class: \catlair\Flow
-caller: internal
